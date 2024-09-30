@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "506211157811",
+    "project_id": "kmt-app-43f56",
+    "storage_bucket": "kmt-app-43f56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506211157811:android:dc621966ab222f9f642046",
+        "android_client_info": {
+          "package_name": "com.example.kmtapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV1yiH5a98Pz2C9bFPmJxb73yOp8IkTNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

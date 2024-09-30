@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.kmtapp.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -24,7 +23,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText edtPhone, edtOTP;
     private FirebaseAuth mAuth;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 String phoneNumber = edtPhone.getText().toString().trim();
 
                 if (TextUtils.isEmpty(phoneNumber)) {
-                    Toast.makeText(MainActivity.this, "Enter a valid phone number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Enter a valid phone number", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String code = edtOTP.getText().toString().trim();
                 if (TextUtils.isEmpty(code)) {
-                    Toast.makeText(MainActivity.this, "Enter OTP", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Enter OTP", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onVerificationFailed(@NonNull FirebaseException e) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     super.onCodeSent(s, token);
                     verificationId = s;
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
                 }
             };
 
@@ -125,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(MainActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
                             // Start the next activity
-                            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         } else {
-                            Toast.makeText(MainActivity.this, "Verification failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Verification failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

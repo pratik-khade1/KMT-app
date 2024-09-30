@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Define your primary color for the light theme -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <!-- Additional colors for your light theme -->
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#000000</color>
+
+<color name="colorPrimaryDark">#121212</color>
+<color name="colorPrimaryVariantDark">#1F1F1F</color>
+<color name="colorOnPrimaryDark">#FFFFFF</color>
+
+<color name="colorSecondaryDark">#03DAC5</color>
+<color name="colorOnSecondaryDark">#000000</color>
+
+<color name="colorBackgroundDark">#121212</color>
+<color name="colorOnBackgroundDark">#FFFFFF</color>
+
+<color name="colorSurfaceDark">#1F1F1F</color>
+<color name="colorOnSurfaceDark">#FFFFFF</color>
 </resources>
