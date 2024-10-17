@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.1"
+cardview = "1.0.0"
 firebaseAuth = "23.0.0"
 firebaseDatabase = "21.0.0"
 junit = "4.13.2"
@@ -18,6 +19,7 @@ playServicesAuth = "21.2.0"
 playServicesMaps = "19.0.0"
 
 [libraries]
+cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-database = { module = "com.google.firebase:firebase-database", version.ref = "firebaseDatabase" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

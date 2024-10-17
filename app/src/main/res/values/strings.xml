@@ -30,7 +30,7 @@
     <string name="already_registered">Already registered?</string>
     <string name="register">Register</string>
     <string name="enter_email_address">Enter Email Address</string>
-    <string name="kmt_prawas">KMT Prawas</string>
+    <string name="kmt_prawas">KMT PRAWAS</string>
     <string name="kmt_prawas_all_rights_reserved">© 2024 KMT Prawas. All Rights Reserved.</string>
     <string name="find_routes">Find Routes</string>
     <string name="check_bus_schedule">Check Bus Schedule</string>
@@ -46,4 +46,9 @@
     <string name="no_schedules_available">No Schedules Available</string>
     <string name="googleMap">This window will show Google map</string>
     <string name="no_schedules_available_for_the_selected_bus_stops">No schedules available for the selected bus stops.</string>
+    <string name="main_street">Main Street</string>
+    <string name="kandalgaon">Kandalgaon</string>
+    <string name="r_k_nagar">R.K Nagar</string>
+    <string name="enter_destination">Enter Destination</string>
+    <string name="bharati_vidyapeeth">Bharati Vidyapeeth</string>
 </resources>

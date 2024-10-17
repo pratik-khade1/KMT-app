@@ -1,0 +1,6 @@
+<!-- res/drawable/half_circle_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#CBD769" /> <!-- Set your desired color here -->
+    <corners android:bottomLeftRadius="50dp" android:bottomRightRadius="50dp" />
+    <size android:width="980dp" android:height="70dp" />
+</shape>
