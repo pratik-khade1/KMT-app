@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/background_color"
+    tools:context=".RegistrationActivity">
+
+    <!-- Registration Title -->
+<TextView
+android:id="@+id/tvRegistrationTitle"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/kmt_prawas"
+android:textColor="#000"
+android:textSize="25sp"
+android:textStyle="bold"
+android:layout_marginTop="40dp"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+android:fontFamily="@font/nice" />
+    <!-- Custom Toggle Button for Mobile or Email Registration -->
+<RadioGroup
+android:id="@+id/radioGroupToggle"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:layout_marginTop="30dp"
+app:layout_constraintTop_toBottomOf="@+id/tvRegistrationTitle"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+android:checkedButton="@id/radioButtonMobile"> <!-- Set default checked button here -->
+
+<!-- Mobile Option -->
+<RadioButton
+    android:id="@+id/radioButtonMobile"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/mobile"
+    android:button="@null"
+    android:background="@drawable/toggle_selector_mobile"
+    android:gravity="center"
+    android:padding="16dp"
+    android:textColor="#FFFFFF"
+    android:textSize="16sp"
+    android:layout_weight="1" />
+
+<!-- Email Option -->
+<RadioButton
+    android:id="@+id/radioButtonEmail"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/email"
+    android:button="@null"
+    android:background="@drawable/toggle_selector_email"
+    android:gravity="center"
+    android:padding="16dp"
+    android:textColor="#FFFFFF"
+    android:textSize="16sp"
+    android:layout_weight="1" />
+</RadioGroup>
+
+    <!-- EditText for Mobile Number -->
+<EditText
+android:id="@+id/editTextMobile"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:hint="@string/mobile_number"
+android:inputType="phone"
+android:textColor="#000"
+android:padding="16dp"
+android:layout_marginTop="20dp"
+android:background="@drawable/edit_text_background"
+android:textSize="16sp"
+app:layout_constraintTop_toBottomOf="@+id/radioGroupToggle"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintWidth_default="spread" />
+
+    <!-- EditText for Email -->
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="@string/enter_email_address"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupToggle"
+        app:layout_constraintWidth_default="spread" />
+
+    <!-- Register Button -->
+<Button
+android:id="@+id/btnRegister"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:text="@string/register"
+android:textAllCaps="false"
+android:background="@drawable/button_background"
+android:textColor="@android:color/white"
+android:textSize="18sp"
+android:layout_marginTop="30dp"
+android:padding="12dp"
+app:layout_constraintTop_toBottomOf="@+id/editTextMobile"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintWidth_default="spread" />
+
+    <!-- "Already Registered?" Text -->
+<TextView
+android:id="@+id/tvAlreadyRegistered"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/already_registered"
+android:textSize="16sp"
+android:layout_marginTop="20dp"
+android:textColor="#000"
+app:layout_constraintTop_toBottomOf="@+id/btnRegister"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Login Button -->
+<Button
+android:id="@+id/btnLogin"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/log_in"
+android:textAllCaps="false"
+android:background="?android:attr/selectableItemBackground"
+android:textColor="@color/colorPrimary"
+android:textSize="16sp"
+app:layout_constraintTop_toBottomOf="@+id/tvAlreadyRegistered"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintWidth_default="spread" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/btnLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>

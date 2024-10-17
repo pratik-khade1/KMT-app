@@ -2,6 +2,7 @@ package com.example.kmtapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+//import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+//import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,102 +26,155 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText edtPhone, edtOTP;
-    private FirebaseAuth mAuth;
-    private String verificationId;
+    private RadioButton radioButtonMobile, radioButtonEmail;
+    private EditText editTextMobile, editTextEmail;
     private ProgressBar progressBar;
+    private FirebaseAuth mAuth;
+
+    private String verificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_registration);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        edtPhone = findViewById(R.id.edtPhone);
-        edtOTP = findViewById(R.id.edtOTP);
-        Button btnGetOTP = findViewById(R.id.btnGetOTP);
-        Button btnVerify = findViewById(R.id.btnVerify);
+        // Initialize views
+        RadioGroup radioGroupToggle = findViewById(R.id.radioGroupToggle);
+        radioButtonMobile = findViewById(R.id.radioButtonMobile);
+        radioButtonEmail = findViewById(R.id.radioButtonEmail);
+        editTextMobile = findViewById(R.id.editTextMobile);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        Button btnRegister = findViewById(R.id.btnRegister);
+        Button btnLogin = findViewById(R.id.btnLogin);
         progressBar = findViewById(R.id.progressBar);
 
-        btnGetOTP.setOnClickListener(v -> {
-            String phoneNumber = edtPhone.getText().toString().trim();
+        // Hide email field by default
+        editTextEmail.setVisibility(View.GONE);
 
-            if (TextUtils.isEmpty(phoneNumber)) {
-                Toast.makeText(MainActivity.this, "Enter a valid phone number", Toast.LENGTH_SHORT).show();
-                return;
+        // Set default checked button to mobile
+        radioButtonMobile.setChecked(true); // Set mobile button as default checked
+
+        // Toggle between mobile and email registration
+        radioGroupToggle.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioButtonMobile) {
+                editTextMobile.setVisibility(View.VISIBLE);
+                editTextEmail.setVisibility(View.GONE);
+            } else {
+                editTextMobile.setVisibility(View.GONE);
+                editTextEmail.setVisibility(View.VISIBLE);
+                // Show the email EditText when email button is checked
+                editTextEmail.setVisibility(View.VISIBLE);
             }
-
-            progressBar.setVisibility(View.VISIBLE);
-            sendVerificationCode(phoneNumber);
         });
 
-        btnVerify.setOnClickListener(v -> {
-            String code = edtOTP.getText().toString().trim();
-            if (TextUtils.isEmpty(code)) {
-                Toast.makeText(MainActivity.this, "Enter OTP", Toast.LENGTH_SHORT).show();
-                return;
+        // Handle Register Button Click (either mobile or email registration)
+        btnRegister.setOnClickListener(v -> {
+            if (radioButtonMobile.isChecked()) {
+                String mobileNumber = editTextMobile.getText().toString().trim();
+                if (TextUtils.isEmpty(mobileNumber)) {
+                    Toast.makeText(MainActivity.this, "Enter a valid mobile number", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Show progress bar and initiate OTP process
+                    progressBar.setVisibility(View.VISIBLE);
+                    sendVerificationCode(mobileNumber);
+                }
+            } else if (radioButtonEmail.isChecked()) {
+                String email = editTextEmail.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(MainActivity.this, "Enter a valid email address", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Show progress bar and perform email registration
+                    progressBar.setVisibility(View.VISIBLE);
+                    registerWithEmail(email);
+                }
             }
+        });
 
-            verifyCode(code);
+        // Handle Login Button Click
+        btnLogin.setOnClickListener(v -> {
+            // Redirect to login activity
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
     }
 
-    private void sendVerificationCode(String phoneNumber) {
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber("+91" + phoneNumber) // Add your country code here
-                        .setTimeout(60L, TimeUnit.SECONDS)
-                        .setActivity(this)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                        .build();
+    // Method to send OTP to the provided mobile number
+    private void sendVerificationCode(String mobileNumber) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber("+91" + mobileNumber)  // Change country code if necessary
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        progressBar.setVisibility(View.GONE);  // Hide progress bar
+                        // Handle auto OTP verification
+                        String code = phoneAuthCredential.getSmsCode();
+                        if (code != null) {
+                            verifyCode(code);
+                        }
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        progressBar.setVisibility(View.GONE);  // Hide progress bar
+                        Toast.makeText(MainActivity.this, "Verification Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        super.onCodeSent(s, forceResendingToken);
+                        progressBar.setVisibility(View.GONE);  // Hide progress bar
+                        verificationId = s;
+                        Toast.makeText(MainActivity.this, "OTP Sent", Toast.LENGTH_SHORT).show();
+                        // Redirect to OTP Verification Activity
+                        Intent intent = new Intent(MainActivity.this, OtpVerificationActivity.class);
+                        intent.putExtra("verificationId", verificationId);
+                        startActivity(intent);
+                    }
+                })
+                .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
-            new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-                @Override
-                public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                    // Automatically fetch OTP and sign in the user
-                    String code = credential.getSmsCode();
-                    if (code != null) {
-                        edtOTP.setText(code);
-                        verifyCode(code);
-                    }
-                }
-
-                @Override
-                public void onVerificationFailed(@NonNull FirebaseException e) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                    super.onCodeSent(s, token);
-                    verificationId = s;
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
-                }
-            };
-
+    // Method to verify the OTP code
     private void verifyCode(String code) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
         signInWithCredential(credential);
     }
 
+    // Method to sign in with phone credential
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(MainActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                        // Start the next activity
-                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                        // OTP verified, proceed to the next screen
+                        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
-                        Toast.makeText(MainActivity.this, "Verification failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Verification Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    // Method for email registration (this is just an example, you should implement actual logic)
+    private void registerWithEmail(String email) {
+        // Example: Firebase authentication for email and password (you need to set a password in your app)
+        // Replace this with actual logic
+        mAuth.createUserWithEmailAndPassword(email, "password123")
+                .addOnCompleteListener(task -> {
+                    progressBar.setVisibility(View.GONE);  // Hide progress bar
+                    if (task.isSuccessful()) {
+                        Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                        // Redirect to home activity
+                        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -12,10 +12,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
@@ -44,32 +43,28 @@ public class LoginActivity extends AppCompatActivity {
         Button btnVerify = findViewById(R.id.btnVerify);
         progressBar = findViewById(R.id.progressBar);
 
-        btnGetOTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneNumber = edtPhone.getText().toString().trim();
+        btnGetOTP.setOnClickListener(v -> {
+            String phoneNumber = edtPhone.getText().toString().trim();
 
-                if (TextUtils.isEmpty(phoneNumber)) {
-                    Toast.makeText(LoginActivity.this, "Enter a valid phone number", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                progressBar.setVisibility(View.VISIBLE);
-                sendVerificationCode(phoneNumber);
+            if (TextUtils.isEmpty(phoneNumber)) {
+                Toast.makeText(LoginActivity.this, "Enter a valid phone number", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            progressBar.setVisibility(View.VISIBLE);
+            sendVerificationCode(phoneNumber);
+            Intent iOTP = new Intent(LoginActivity.this, otp_verificationActivity.class);
+            startActivity(iOTP);
         });
 
-        btnVerify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String code = edtOTP.getText().toString().trim();
-                if (TextUtils.isEmpty(code)) {
-                    Toast.makeText(LoginActivity.this, "Enter OTP", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                verifyCode(code);
+        btnVerify.setOnClickListener(v -> {
+            String code = edtOTP.getText().toString().trim();
+            if (TextUtils.isEmpty(code)) {
+                Toast.makeText(LoginActivity.this, "Enter OTP", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            verifyCode(code);
         });
     }
 
@@ -84,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
+    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
             new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
                 @Override
@@ -119,17 +114,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                            // Start the next activity
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Verification failed", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                        // Start the next activity
+                        startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Verification failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

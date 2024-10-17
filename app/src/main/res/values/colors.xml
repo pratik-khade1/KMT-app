@@ -4,6 +4,19 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryVariant">#3700B3</color>
     <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="light_blue">#ADD8E6</color>
+    <color name="dark_sky_blue">#00BFFF</color> <!-- Dark Sky Blue -->
+    <color name="light_sky_blue">#87CEFA</color> <!-- Light Sky Blue -->
+
+    <color name="background_color">#E0F7FA</color> <!-- Light background color -->
+    <color name="toggle_checked">#00BFFF</color> <!-- Dark Sky Blue when checked -->
+    <color name="toggle_unchecked">#87CEFA</color> <!-- Light Sky Blue when unchecked -->
+
+    <color name="black">#F000</color>
+    <color name="white">#FFFFFF</color><!-- Light background color -->
+    <color name="soothing_background">#E0F7FA</color> <!-- Light Cyan -->
+    <color name="button_color">#00796B</color> <!-- Teal -->
+
 
     <!-- Additional colors for your light theme -->
     <color name="colorSecondary">#03DAC6</color>
